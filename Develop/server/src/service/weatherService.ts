@@ -84,13 +84,13 @@ class WeatherService {
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any): Weather {
     const date = response.list[0].dt_txt;
-    const temperature = response.list[0].main.temp;
+    const tempF = response.list[0].main.temp;
     const windSpeed = response.list[0].wind_speed;
     const humidity = response.list[0].humidity;
     const icon = response.list[0].weather.icon;
     const iconDescription = response.list[0].weather.description;
     const city = response.city.name;
-    return new Weather(date,temperature, windSpeed, humidity, icon, iconDescription, city);
+    return new Weather(city, date, icon, iconDescription, tempF, windSpeed, humidity);
   }
   // TODO: Complete buildForecastArray method
 private buildForecastArray(currentWeather: Weather, weatherData: any[]): Weather[] {
