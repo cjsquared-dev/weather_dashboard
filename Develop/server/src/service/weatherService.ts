@@ -82,7 +82,7 @@ class WeatherService {
     const humidity = response.current.humidity;
     const icon = response.current.weather[0].icon;
     const iconDescription = response.current.weather[0].description;
-    const city = response.timezone;
+    const city = response.name;
     return new Weather(temperature, description, windSpeed, humidity, icon, iconDescription, city);
   }
   // TODO: Complete buildForecastArray method
