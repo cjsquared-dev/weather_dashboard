@@ -1,6 +1,22 @@
 [
   {
     "name": "New York City",
-    "id": "b0668d54-9425-48ff-b846-2b45e6b1ebde"
+    "id": "00897c8e-0b77-475c-888a-a33cbac65818"
+  },
+  {
+    "name": "San Diego",
+    "id": "e70555a5-e08b-4801-a71a-1d20efc25114"
+  },
+  {
+    "name": "San Diego",
+    "id": "b959d30b-0fe7-403e-a000-8431ac4d9812"
+  },
+  {
+    "name": "New York City",
+    "id": "667b5274-eefa-43fb-9685-bce5b51a2185"
+  },
+  {
+    "name": "Los Angeles",
+    "id": "80194be2-570a-4aa9-b8b1-82e00d793c0f"
   }
 ]
