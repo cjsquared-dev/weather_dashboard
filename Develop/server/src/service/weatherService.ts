@@ -93,18 +93,29 @@ class WeatherService {
     return new Weather(date,temperature, windSpeed, humidity, icon, iconDescription, city);
   }
   // TODO: Complete buildForecastArray method
-  private buildForecastArray(currentWeather: Weather, weatherData:any[]) {
+private buildForecastArray(currentWeather: Weather, weatherData: any[]): Weather[] {
+  try {
     const forecastArray: Weather[] = [currentWeather];
-    return weatherData.map(data => ({
-      date: data.dt_txt,
-      tempF: data.temp,
-      windSpeed: data.wind_speed,
-      humidity: data.humidity,
-      icon: data.weather[0].icon,
-      iconDescription: data.weather[0].description,
-      city: currentWeather.city,
-    }));
+    for (let i = 1; i < weatherData.length; i += 8) {
+      const { weather, main, wind, dt_txt } = weatherData[i];
+      forecastArray.push(
+        new Weather(
+          this.cityName,
+          dt_txt,
+          weather[0].icon,
+          weather[0].description,
+          main.temp,
+          wind.speed,
+          main.humidity
+        )
+      );
+    }
+    return forecastArray;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
+}
   // TODO: Complete getWeatherForCity method
 async getWeatherForCity(city: string): Promise<Weather[]> {
   this.cityName = city;
