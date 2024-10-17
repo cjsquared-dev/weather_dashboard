@@ -40,8 +40,8 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
-  private baseURL: string = process.env.API_BASE_URL;
-  private apiKey: string = process.env.API_KEY;
+  private baseURL?: string = process.env.API_BASE_URL;
+  private apiKey?: string = process.env.API_KEY;
   private cityName: string = '';
 
 
@@ -99,6 +99,7 @@ class WeatherService {
   }
   // TODO: Complete getWeatherForCity method
 async getWeatherForCity(city: string): Promise<Weather[]> {
+  this.cityName = city;
   const coordinates = await this.fetchAndDestructureLocationData();
   const weatherData = await this.fetchWeatherData(coordinates);
   const currentWeather = this.parseCurrentWeather(weatherData);
