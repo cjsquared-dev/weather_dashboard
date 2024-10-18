@@ -40,9 +40,15 @@ class Weather {
 // TODO: Complete the WeatherService class
 class WeatherService {
   // TODO: Define the baseURL, API key, and city name properties
-  private baseURL?: string = process.env.API_BASE_URL;
-  private apiKey?: string = process.env.API_KEY;
+  private baseURL?: string;
+  private apiKey?: string;
   private cityName: string = '';
+
+  constructor() {
+    this.baseURL = process.env.API_BASE_URL || '';
+    this.apiKey = process.env.API_KEY || '';
+  }
+    
 
 
   // TODO: Create fetchLocationData method
@@ -96,7 +102,7 @@ class WeatherService {
     const date = response.list[0].dt_txt;
     const tempF = response.list[0].main.temp;
     const windSpeed = response.list[0].wind.speed;
-    const humidity = response.list[0].humidity;
+    const humidity = response.list[0].main.humidity;
     const icon = response.list[0].weather[0].icon;
     const iconDescription = response.list[0].weather[0].description;
     const city = response.city.name;

@@ -17,7 +17,12 @@ class HistoryService {
  private async read(): Promise<City[]> {
     try {
       const data = await fs.readFile('db/searchHistory.json', 'utf-8');
-      return JSON.parse(data);
+      const cities = JSON.parse(data);
+      if (Array.isArray(cities)) {
+        return cities.map((city) => new City(city.name, city.id));
+    }
+    return [];
+      
     } catch (error) {
       console.error(error);
       return [];
@@ -38,6 +43,9 @@ class HistoryService {
   // TODO Define an addCity method that adds a city to the searchHistory.json file
   async addCity(city: string) {
     const cities = await this.getCities();
+    if (cities.some(existingCity => existingCity.name === city)) {
+      throw new Error('City already exists in history');
+  }
     const newCity = new City(city, this.generateId());
     cities.push(newCity);
     await this.write(cities);
