@@ -3,7 +3,7 @@
   ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Description
-A Weather dashboard to 
+A Weather dashboard to provide current weather information and a 5-day Forecast
 
 
 # Table of Contents
@@ -21,8 +21,7 @@ Website Link: https://weather-dashboard-gn1l.onrender.com
 
 
 ## Usage
-Whenever you need to see the weather, run this application! Put in a city name and let the API do the search and retrieve your weather forecast data!
-
+Whenever you need to see the weather, put in a city name to search and let the site through API magic retrieve your weather forecast data!
 
 
 ## License
