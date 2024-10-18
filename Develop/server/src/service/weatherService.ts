@@ -48,6 +48,7 @@ class WeatherService {
   // TODO: Create fetchLocationData method
   private async fetchLocationData(query: string): Promise<any> {
     try{
+      console.log('query:', query);
       const response = await fetch(query);
       const data = await response.json();
       return { lat: data[0].lat, lon: data[0].lon };
@@ -74,21 +75,30 @@ class WeatherService {
   // TODO: Create fetchAndDestructureLocationData method
   private async fetchAndDestructureLocationData() {
     const locationData = await this.fetchLocationData(this.buildGeocodeQuery());
+    if (!locationData || locationData.lat === undefined || locationData.lon === undefined) {
+      throw new Error("Invalid location data");
+    }
     return this.destructureLocationData(locationData);
   }
   // TODO: Create fetchWeatherData method
   private async fetchWeatherData(coordinates: Coordinates) {
-    const response = await fetch(this.buildWeatherQuery(coordinates));
-    return await response.json();
+
+    try {
+      const response = await fetch(this.buildWeatherQuery(coordinates));
+      return await response.json();
+    } catch (error) {  
+      console.log(error);
+      return error;
+    }
   }
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any): Weather {
     const date = response.list[0].dt_txt;
     const tempF = response.list[0].main.temp;
-    const windSpeed = response.list[0].wind_speed;
+    const windSpeed = response.list[0].wind.speed;
     const humidity = response.list[0].humidity;
-    const icon = response.list[0].weather.icon;
-    const iconDescription = response.list[0].weather.description;
+    const icon = response.list[0].weather[0].icon;
+    const iconDescription = response.list[0].weather[0].description;
     const city = response.city.name;
     return new Weather(city, date, icon, iconDescription, tempF, windSpeed, humidity);
   }
@@ -120,7 +130,6 @@ private buildForecastArray(currentWeather: Weather, weatherData: any[]): Weather
 async getWeatherForCity(city: string): Promise<Weather[]> {
   this.cityName = city;
   const coordinates = await this.fetchAndDestructureLocationData();
-  //console.log('coordinates:', coordinates);
   const weatherData = await this.fetchWeatherData(coordinates);
   //console.log('weatherData:', weatherData);
   const currentWeather = this.parseCurrentWeather(weatherData);
