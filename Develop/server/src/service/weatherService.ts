@@ -48,13 +48,12 @@ class WeatherService {
     this.baseURL = process.env.API_BASE_URL || '';
     this.apiKey = process.env.API_KEY || '';
   }
-    
+
 
 
   // TODO: Create fetchLocationData method
   private async fetchLocationData(query: string): Promise<any> {
-    try{
-      console.log('query:', query);
+    try {
       const response = await fetch(query);
       const data = await response.json();
       return { lat: data[0].lat, lon: data[0].lon };
@@ -92,14 +91,14 @@ class WeatherService {
     try {
       const response = await fetch(this.buildWeatherQuery(coordinates));
       return await response.json();
-    } catch (error) {  
+    } catch (error) {
       console.log(error);
       return error;
     }
   }
   // TODO: Build parseCurrentWeather method
   private parseCurrentWeather(response: any): Weather {
-    const date = response.list[0].dt_txt;
+    const date = response.list[0].dt_txt.substring(0, 10);
     const tempF = response.list[0].main.temp;
     const windSpeed = response.list[0].wind.speed;
     const humidity = response.list[0].main.humidity;
@@ -109,38 +108,38 @@ class WeatherService {
     return new Weather(city, date, icon, iconDescription, tempF, windSpeed, humidity);
   }
   // TODO: Complete buildForecastArray method
-private buildForecastArray(currentWeather: Weather, weatherData: any[]): Weather[] {
-  try {
-    const forecastArray: Weather[] = [currentWeather];
-    for (let i = 1; i < weatherData.length; i += 8) {
-      const { weather, main, wind, dt_txt } = weatherData[i];
-      forecastArray.push(
-        new Weather(
-          this.cityName,
-          dt_txt,
-          weather[0].icon,
-          weather[0].description,
-          main.temp,
-          wind.speed,
-          main.humidity
-        )
-      );
+  private buildForecastArray(currentWeather: Weather, weatherData: any[]): Weather[] {
+    try {
+      const forecastArray: Weather[] = [currentWeather];
+      for (let i = 1; i < weatherData.length; i += 8) {
+        const { weather, main, wind, dt_txt } = weatherData[i];
+        forecastArray.push(
+          new Weather(
+            this.cityName,
+            dt_txt.substring(0, 10),
+            weather[0].icon,
+            weather[0].description,
+            main.temp,
+            wind.speed,
+            main.humidity
+          )
+        );
+      }
+      return forecastArray;
+    } catch (error) {
+      console.log(error);
+      return [];
     }
-    return forecastArray;
-  } catch (error) {
-    console.log(error);
-    return [];
   }
-}
   // TODO: Complete getWeatherForCity method
-async getWeatherForCity(city: string): Promise<Weather[]> {
-  this.cityName = city;
-  const coordinates = await this.fetchAndDestructureLocationData();
-  const weatherData = await this.fetchWeatherData(coordinates);
-  //console.log('weatherData:', weatherData);
-  const currentWeather = this.parseCurrentWeather(weatherData);
-  return this.buildForecastArray(currentWeather, weatherData.list);
-}
+  async getWeatherForCity(city: string): Promise<Weather[]> {
+    this.cityName = city;
+    const coordinates = await this.fetchAndDestructureLocationData();
+    const weatherData = await this.fetchWeatherData(coordinates);
+    //console.log('weatherData:', weatherData);
+    const currentWeather = this.parseCurrentWeather(weatherData);
+    return this.buildForecastArray(currentWeather, weatherData.list);
+  }
 }
 
 export default new WeatherService();

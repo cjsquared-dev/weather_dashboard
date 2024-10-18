@@ -5,8 +5,8 @@ import HistoryService from '../../service/historyService.js';
 import WeatherService from '../../service/weatherService.js';
 
 // TODO: POST Request with city name to retrieve weather data
-  // TODO: GET weather data from city name
-  // TODO: save city to search history
+// TODO: GET weather data from city name
+// TODO: save city to search history
 router.post('/', async (req: Request, res: Response) => {
   const { cityName } = req.body;
   if (!cityName) {
